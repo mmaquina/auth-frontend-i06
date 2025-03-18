@@ -11,10 +11,10 @@ import PasswordReset from './pages/PasswordReset';
 import EmailVerification from './pages/EmailVerification';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Home from './pages/Home';
 
 // Placeholder components for demonstration
 const Dashboard = () => <div>Dashboard (Protected Page)</div>;
-const Home = () => <div>Auth Server Frontend Home</div>;
 
 function App() {
   return (
