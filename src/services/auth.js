@@ -5,9 +5,19 @@ import jwtDecode from 'jwt-decode';
 const AuthService = {
   // Login user
   login: async (email, password) => {
-    const response = await api.post('/auth/login', {
-      username: email,
-      password: password,
+    // Create form data for OAuth2 password flow
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+    formData.append('grant_type', '');
+    formData.append('scope', '');
+    formData.append('client_id', '');
+    formData.append('client_secret', '');
+    
+    const response = await api.post('/auth/login', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     });
     
     const { access_token, refresh_token } = response.data;
