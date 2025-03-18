@@ -76,11 +76,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Register function
-  const register = async (email, password, fullName) => {
+  const register = async (email, password, full_name) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await AuthService.register(email, password, fullName);
+      const data = await AuthService.register(email, password, full_name);
       return data;
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed');

@@ -19,8 +19,7 @@ const RegisterForm = ({ onSuccess }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    firstName: '',
-    lastName: ''
+    full_name: ''
   });
 
   // Form validation state
@@ -83,8 +82,8 @@ const RegisterForm = ({ onSuccess }) => {
       newErrors.password = 'Password must be at least 8 characters';
     } else if (!/(?=.*[0-9])/.test(formData.password)) {
       newErrors.password = 'Password must contain at least one number';
-    } else if (!/(?=.*[!@#$%^&*])/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one special character';
+    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one uppercase letter';
     }
     
     // Confirm password validation
@@ -94,14 +93,9 @@ const RegisterForm = ({ onSuccess }) => {
       newErrors.confirmPassword = 'Passwords do not match';
     }
     
-    // First name validation
-    if (!formData.firstName) {
-      newErrors.firstName = 'First name is required';
-    }
-    
-    // Last name validation
-    if (!formData.lastName) {
-      newErrors.lastName = 'Last name is required';
+    // Full name validation
+    if (!formData.full_name) {
+      newErrors.full_name = 'Full name is required';
     }
     
     setErrors(newErrors);
@@ -124,11 +118,12 @@ const RegisterForm = ({ onSuccess }) => {
     setSubmitting(true);
     
     try {
-      // Combine first and last name for the API
-      const fullName = `${formData.firstName} ${formData.lastName}`;
-      
-      // Call register from auth context
-      await register(formData.email, formData.password, fullName);
+      // Call register from auth context with all required fields
+      await register(
+        formData.email, 
+        formData.password, 
+        formData.full_name
+      );
       
       // Set success message
       setFormSuccess('Registration successful! Please check your email to verify your account.');
@@ -162,38 +157,20 @@ const RegisterForm = ({ onSuccess }) => {
       )}
       
       <Grid container spacing={2}>
-        {/* First Name */}
-        <Grid item xs={12} sm={6}>
+        {/* Full Name */}
+        <Grid item xs={12}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="firstName"
-            label="First Name"
-            name="firstName"
-            autoComplete="given-name"
-            value={formData.firstName}
+            id="full_name"
+            label="Full Name"
+            name="full_name"
+            autoComplete="name"
+            value={formData.full_name}
             onChange={handleChange}
-            error={!!errors.firstName}
-            helperText={errors.firstName}
-            disabled={submitting || loading}
-          />
-        </Grid>
-        
-        {/* Last Name */}
-        <Grid item xs={12} sm={6}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="lastName"
-            label="Last Name"
-            name="lastName"
-            autoComplete="family-name"
-            value={formData.lastName}
-            onChange={handleChange}
-            error={!!errors.lastName}
-            helperText={errors.lastName}
+            error={!!errors.full_name}
+            helperText={errors.full_name}
             disabled={submitting || loading}
           />
         </Grid>
@@ -298,7 +275,7 @@ const RegisterForm = ({ onSuccess }) => {
       
       {/* Password requirements */}
       <Typography variant="caption" color="text.secondary" component="div" sx={{ mt: 1 }}>
-        Password must be at least 8 characters and include a number and special character.
+        Password must be at least 8 characters and include a number and an uppercase letter.
       </Typography>
       
       {/* Email verification note */}

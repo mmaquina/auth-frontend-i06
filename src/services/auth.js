@@ -19,11 +19,14 @@ const AuthService = {
   },
 
   // Register new user
-  register: async (email, password, fullName) => {
+  register: async (email, password, full_name) => {
     const response = await api.post('/auth/register', {
       email: email,
       password: password,
-      full_name: fullName,
+      full_name: full_name,
+      is_active: true,
+      is_superuser: false,
+      email_verified: false
     });
     
     return response.data;
